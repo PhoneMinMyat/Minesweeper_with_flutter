@@ -1,10 +1,12 @@
 //This widget is used for the table
 import 'package:flutter/material.dart';
+import 'package:minesweeper/models/ground_data.dart';
 
 enum Status { select, unselect, flag, mine }
 
 class Ground extends StatefulWidget {
-  const Ground({Key? key}) : super(key: key);
+  final GroundData groundInfo;
+  const Ground({required this.groundInfo, Key? key}) : super(key: key);
 
   @override
   _GroundState createState() => _GroundState();
@@ -12,19 +14,10 @@ class Ground extends StatefulWidget {
 
 class _GroundState extends State<Ground> {
   Status currentState = Status.unselect;
-  String showText() {
-    if (currentState == Status.unselect) {
-      return " ";
-    } else if (currentState == Status.select) {
-      return "S";
-    } else if (currentState == Status.flag) {
-      return "F";
-    } else if (currentState == Status.mine) {
-      return "M";
-    } else {
-      return "E";
-    }
-  }
+
+  // Widget getBoardWidget(){
+    
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +35,11 @@ class _GroundState extends State<Ground> {
         });
       },
       child: Center(
-        child: Text(showText()),
+        child: Text(
+            'bomb:${widget.groundInfo.hasBomb}'),
       ),
     );
   }
 }
+
+// x:${widget.groundInfo.x} \n y:${widget.groundInfo.y} \n 
