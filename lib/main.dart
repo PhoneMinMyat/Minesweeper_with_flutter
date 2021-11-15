@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:minesweeper/models/ground_data.dart';
 import 'widgets/ground.dart';
+import 'controllers/bomb_logic.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,37 +26,31 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int boardWidth = 10;
   int boardLength = 10;
-  int numberOfBombs = 30;
+  int numberOfBombs = 25;
 
   List<GroundData> board = [];
 
-//add board cells' x and y locations
-  void addBoardLocation() {
-    for (int y = 0; y < boardWidth; y++) {
-      for (int x = 0; x < boardLength; x++) {
-        board.add(GroundData(x: x, y: y));
-      }
-    }
-  }
-
-//add Bomb to board cells
-  void addBomb() {
-    List bombIndex = List.generate(board.length, (i) => i);
-    bombIndex.shuffle();
-    for (int x = 0; x < numberOfBombs; x++) {
-      int bombLocation = bombIndex[x];
-      GroundData tempBoard = board[bombLocation];
-
-      board[bombLocation] =
-          GroundData(x: tempBoard.x, y: tempBoard.y, hasBomb: true);
-    }
-  }
-
   @override
   void initState() {
-    addBoardLocation();
-    addBomb();
+    board = getBoard(boardWidth, boardLength, numberOfBombs);
+
     super.initState();
+  }
+
+  void setFlag(int index) {
+    setState(() {
+      if (board[index].currentStatus == Status.unselect) {
+        board[index].currentStatus = Status.flag;
+      } else if (board[index].currentStatus == Status.flag) {
+        board[index].currentStatus = Status.unselect;
+      }
+    });
+  }
+
+  void selectGround(int index) {
+    setState(() {
+      board[index].currentStatus = Status.select;
+    });
   }
 
   @override
@@ -75,7 +70,12 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                     color: Colors.grey,
                     border: Border.all(color: Colors.black)),
-                child: Ground(groundInfo: board[index]),
+                child: Ground(
+                  groundInfo: board[index],
+                  selectGround: selectGround,
+                  setFlag: setFlag,
+                  index: index,
+                ),
               );
             }),
       ),
