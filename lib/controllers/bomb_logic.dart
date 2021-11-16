@@ -1,4 +1,3 @@
-
 import 'package:minesweeper/models/ground_data.dart';
 
 List<GroundData> getBoard(int boardWidth, int boardLength, int numberOfBombs) {
@@ -15,7 +14,7 @@ List<GroundData> getBoard(int boardWidth, int boardLength, int numberOfBombs) {
   //get random number for bomb location
   List bombIndex = List.generate(board.length, (i) => i);
   bombIndex.shuffle();
-  int tempIndex ;
+  int tempIndex;
 
   //first (numberOfBombs) number of list should be the place bomb
   for (int x = 0; x < numberOfBombs; x++) {
@@ -86,4 +85,66 @@ List<GroundData> getBoard(int boardWidth, int boardLength, int numberOfBombs) {
   }
 
   return board;
+}
+
+void clickClearGround(List<GroundData> board, int index) {
+  int tempIndex;
+
+  int x = board[index].x;
+  int y = board[index].y;
+  //top left ground
+  tempIndex =
+      board.indexWhere((element) => element.x == x - 1 && element.y == y - 1);
+  if (tempIndex >= 0) {
+    board[tempIndex].selectGround();
+  }
+
+  //top centre ground
+  tempIndex =
+      board.indexWhere((element) => element.x == x && element.y == y - 1);
+  if (tempIndex >= 0) {
+    board[tempIndex].selectGround();
+  }
+
+  //top right ground
+  tempIndex =
+      board.indexWhere((element) => element.x == x + 1 && element.y == y - 1);
+  if (tempIndex >= 0) {
+    board[tempIndex].selectGround();
+  }
+
+  //right ground
+  tempIndex =
+      board.indexWhere((element) => element.x == x + 1 && element.y == y);
+  if (tempIndex >= 0) {
+    board[tempIndex].selectGround();
+  }
+
+  // left ground
+  tempIndex =
+      board.indexWhere((element) => element.x == x - 1 && element.y == y);
+  if (tempIndex >= 0) {
+    board[tempIndex].selectGround();
+  }
+
+  //bottom left ground
+  tempIndex =
+      board.indexWhere((element) => element.x == x - 1 && element.y == y + 1);
+  if (tempIndex >= 0) {
+    board[tempIndex].selectGround();
+  }
+
+  //bottom centre ground
+  tempIndex =
+      board.indexWhere((element) => element.x == x && element.y == y + 1);
+  if (tempIndex >= 0) {
+    board[tempIndex].selectGround();
+  }
+
+  //bottom right ground
+  tempIndex =
+      board.indexWhere((element) => element.x == x + 1 && element.y == y + 1);
+  if (tempIndex >= 0) {
+    board[tempIndex].selectGround();
+  }
 }

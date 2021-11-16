@@ -21,4 +21,17 @@ class GroundData {
     aroundBomb += 1;
   }
 
+  selectGround(){
+    if (currentStatus != Status.flag) {
+        currentStatus = Status.select;
+      }
+  }
+
+  setFlag(){
+    if (currentStatus == Status.unselect) {
+        currentStatus = Status.flag;
+      } else if (currentStatus == Status.flag) {
+        currentStatus = Status.unselect;
+      }
+  }
 }
