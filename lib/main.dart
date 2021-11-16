@@ -27,7 +27,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int boardWidth = 10;
   int boardLength = 10;
-  int numberOfBombs = 5;
+  int numberOfBombs = 25;
 
   List<GroundData> board = [];
 
