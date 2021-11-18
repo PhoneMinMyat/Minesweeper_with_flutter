@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:minesweeper/models/ground_data.dart';
+import 'package:minesweeper/models/facts.dart';
 import 'package:minesweeper/widgets/board.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -35,8 +36,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int boardWidth = 10;
-  int boardLength = 10;
+  int boardWidth = 12;
+  int boardLength = 12;
   int numberOfBombs = 25;
   bool firstClick = true;
 
@@ -71,20 +72,46 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('You Lose'),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            title: const Text('You Lose',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
             content: SingleChildScrollView(
               child: Column(
                 children: [
-                  const Text('DO YOU KNOW?'),
-                  const Icon(MdiIcons.bombOff),
                   const Text(
-                      'UNICEF has reported a total of 72 incidents across Myanmar in the first four months of 2021.'),
+                    'DO YOU KNOW?',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  const Icon(
+                    MdiIcons.bombOff,
+                    size: 50,
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    getFact(),
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        newGame();
-                      },
-                      child: const Text('New Game'))
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      newGame();
+                    },
+                    child: const Text('New Game'),
+                    style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).colorScheme.secondary),
+                  )
                 ],
               ),
             ),
@@ -93,21 +120,49 @@ class _HomePageState extends State<HomePage> {
   }
 
   void winGame() {
+    stopTimer();
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('You WINNNNN!'),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            title: const Text(
+              'Congratulation!',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
             content: SingleChildScrollView(
               child: Column(
                 children: [
-                  const Text('You WIN The Game'),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  const Text(
+                    'You WIN The Game',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Text(
+                    'Time: $minutes:$seconds',
+                    style: const TextStyle(fontSize: 18),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        newGame();
-                      },
-                      child: const Text('New Game'))
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      newGame();
+                    },
+                    child: const Text('New Game'),
+                    style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).colorScheme.secondary),
+                  )
                 ],
               ),
             ),
@@ -190,13 +245,19 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Center(
-        child: Column(children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Mines: $numberOfBombs'),
-              Text('$minutes:$seconds')
-            ],
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Mines: $numberOfBombs',
+                  style: const TextStyle(fontSize: 20),
+                ),
+                Text('$minutes:$seconds', style: const TextStyle(fontSize: 20))
+              ],
+            ),
           ),
           Board(
               board: board,
