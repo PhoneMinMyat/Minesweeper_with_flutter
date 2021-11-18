@@ -25,7 +25,8 @@ class Board extends StatelessWidget {
         itemBuilder: (context, index) {
           return Container(
             decoration: BoxDecoration(
-                color: Colors.grey, border: Border.all(color: Colors.black)),
+                color: Theme.of(context).colorScheme.background,
+                border: Border.all(color: Colors.black)),
             child: Ground(
               groundInfo: board[index],
               selectGround: selectGround,

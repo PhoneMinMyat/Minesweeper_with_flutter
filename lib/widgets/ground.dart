@@ -35,7 +35,7 @@ class _GroundState extends State<Ground> {
       }
     } else if (widget.groundInfo.currentStatus == Status.unselect) {
       return Container(
-        color: Colors.brown,
+        color: Theme.of(context).colorScheme.secondary,
       );
     } else {
       return const Icon(MdiIcons.flag);
